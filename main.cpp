@@ -10,120 +10,25 @@
 
 using namespace std;
 
+/*In this project, to draw lines you may use: 
+ glBegin(GL_LINES);
+    glColor3f(1.f, 0.f, 0.f); // Set the color for every subsequent vertex to red
+    glVertex2f(point1x, point1y); // Give OpenGL the first vertex, etc. You can put more glColor3fs between to get multicolor lines.
+    glVertex2f(point2x, point2y);
+    glColor3f(0.f, 0.f, 1.f); // Now I'm a blueberry
+    glVertex2f(point3x, point3y);
+        (...)
+glEnd();
+
+You may not use: gluOrtho2D, gluLookAt, or functions to rotate, scale, or translate 
+*/
+
 //global variables
 float *PixelBuffer;
 float *PolygonBuffer;
 vector<vector<double>> vArr;
 int wWidth;
 int wLength;
-
-//Fuctions
-void display();  
-inline int roundOff(const double a) {return (int)(a+0.5);}
-void makePix(int x, int y, int pid);
-void copyBuffer(int pid);
-void clearPixelBuffer(); 
-void clearPolygonBuffer(int pid); 
-void lineDrawRaster();
-inline void mainMenu(int pid) {;}
-void scaleMenu(int pid);
-void rotateMenu(int pid);
-void translateMenu(int pid);
-void clippingMenu(int pid);
-void clip(int points[10][2], int &vertices,int x1, int y1, int x2, int y2);
-int xInter(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4);
-int yInter(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4);
-
-int main(int argc, char *argv[])
-{
-        glutInit(&argc, argv);
-        glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB); // These are the default values 
-        if (argc != 3) {
-                cout << "Usage: p1 <window width> <window length>\n";
-                exit(1);
-        }
-        wWidth = atoi(argv[1]);
-        wLength = atoi(argv[2]);
-        glutInitWindowSize(wWidth, wLength);
-        glutInitWindowPosition(100, 100);
-        int MainWindow = glutCreateWindow("Polygons");
-        glClearColor(0, 0, 0, 0); //clears the buffer of OpenGL, sets a black background
-        int scale_menu, rotate_menu, translate_menu, clipping_menu;//For use in graphical menu
-
-        vector<double> v; // The main V 
-	double num; 
-	fstream file;
-        file.open("inputFile.txt");
-
-        if (!file) {
-                cerr << "Unable to open file\n";
-		exit(1);   
-        }
-        while (file >> num)
-                v.push_back(num); //Initial vector for all polygons
-	file.close(); 
-
-	auto vpoint = v.begin(); 
-        int polyTotalForBuffer = (int)*vpoint;
-	
-      	for (int i = 0; i < polyTotalForBuffer; i++) {
-		vector<double> Vx; 
-		vArr.push_back(Vx);  
-		double vertices = *(++vpoint);
-		vArr.at(i).push_back(vertices); 
-		for (int j = 0; j < vertices; j++) { 
-			vArr.at(i).push_back(*(++vpoint)); 
-			vArr.at(i).push_back(*(++vpoint)); 
-		}	
-	}
-
-        // Prepping area before being copied to Pixel Buffer 
-        PolygonBuffer = new float[polyTotalForBuffer*wWidth*wLength*3]();
-	
-	//Buffer drawn to screen
-        PixelBuffer = new float[wWidth * wLength * 3]();
-
-
-	//Line Draw and Rasterize the original polygons! 
-	lineDrawRaster(); 	
-
-
-        // Offer the user opportunities to transform! 
-        translate_menu = glutCreateMenu(translateMenu);
-		glutAddMenuEntry("Square", 0); 
-		glutAddMenuEntry("Triangle", 1); 
-		glutAddMenuEntry("Pentagon", 2); 
-
-        scale_menu = glutCreateMenu(scaleMenu);
-                glutAddMenuEntry("Square", 0);
-                glutAddMenuEntry("Triangle", 1);
-                glutAddMenuEntry("Pentagon", 2);
-
-        rotate_menu = glutCreateMenu(rotateMenu);
-                glutAddMenuEntry("Square", 0);
-                glutAddMenuEntry("Triangle", 1);
-                glutAddMenuEntry("Pentagon", 2);
-
-        clipping_menu = glutCreateMenu(clippingMenu); 
-		glutAddMenuEntry("Square", 0);
-                glutAddMenuEntry("Triangle", 1);
-                glutAddMenuEntry("Pentagon", 2);
-	
-	glutCreateMenu(mainMenu);
-                glutAddSubMenu("Translate", translate_menu);
-                glutAddSubMenu("Scale", scale_menu);
-                glutAddSubMenu("Rotate", rotate_menu);
-		glutAddSubMenu("Clipping", clipping_menu); 
-        glutAttachMenu(GLUT_RIGHT_BUTTON);
-
-       
-        glutDisplayFunc(display);
-
-
-        glutMainLoop();//main display loop, will display until terminate
-
-        return 0;
-}
 
 void lineDrawRaster() 
 { 
@@ -459,112 +364,89 @@ void translateMenu(int pid)
 	lineDrawRaster(); 
 	glutPostRedisplay(); 
 }
-void clippingMenu(int pid) 
+int roundOff(const double a) 
 {
-	int xMin, xMax, yMin, yMax; 
-	int vertices = (int)vArr.at(pid).at(0); 
-	cout << "Please enter the x lower, x upper, y lower, and y upper bounds for the clipping window and hit enter:\n"; 
-	cin >> xMin >> xMax >> yMin >> yMax;
-	while (xMin < 0 || xMax > wWidth || yMin < 0 || yMax > wLength || xMin >= xMax || yMin >= yMax) {
-		cout << "Out of bounds. Please enter the x lower, x upper, y lower, and y upper bounds for the clipping window and hit enter:\n";
-		cin >> xMin >> xMax >> yMin >> yMax; 
-	}
+	return (int)(a+0.5);
+}
+int main(int argc, char *argv[])
+{
+        glutInit(&argc, argv);
+        glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB); // These are the default values 
 
-	int points[10][2]; 		
-	for (int i = 0; i < vertices; i++) {
-		points[i][0] = (int)vArr.at(pid).at(1+i*2);
-	        points[i][1] = (int)vArr.at(pid).at(2+i*2);	
-	}		
-	
-	//Points in clipping window as well as in input file must be in clockwise order
-	int clipWindow[][2] = {{xMin, yMin}, {xMin, yMax}, {xMax, yMax}, {xMax, yMin}}; 	
+        wWidth = 600;
+        wLength = 600;
+        glutInitWindowSize(wWidth, wLength);
+        glutInitWindowPosition(100, 100);
+        int MainWindow = glutCreateWindow("Polyhedrons");
+        glClearColor(0, 0, 0, 0); //clears the buffer of OpenGL, sets a black background
+        int scale_menu, rotate_menu, translate_menu; //For use in graphical menu
 
-	for (int i = 0; i < 4; i++) {
-		int k = (i+1) % 4; 
-		clip(points, vertices, clipWindow[i][0], clipWindow[i][1], clipWindow[k][0], clipWindow[k][1]);
-	}	 
-	
-	vArr.at(pid).clear();
-      	
-	vArr.at(pid).push_back((double)vertices); 
-	for (int i = 0; i < vertices; i++) { 
-                vArr.at(pid).push_back((double)points[i][0]); 
-                vArr.at(pid).push_back((double)points[i][1]); 
-	}
+        vector<double> v; // The main V 
+        double num;
+        fstream file;
+        file.open("inputFile.txt");
 
-	ofstream file;
-        file.open("inputFile.txt", std::ofstream::out | std::ofstream::trunc);
         if (!file) {
                 cerr << "Unable to open file\n";
-                exit(1);   
+                exit(1);
         }
-        file << vArr.size() << '\n';
-        for (int i = 0; i < vArr.size(); i++) {
-                for (int j = 0; j < vArr.at(i).size(); j++)
-                        file << vArr.at(i).at(j) << '\n';
-        }
+        while (file >> num)
+                v.push_back(num); //Initial vector for all polygons
+        file.close();
 
+        auto vpoint = v.begin();
+        int polyTotalForBuffer = (int)*vpoint;
+
+        for (int i = 0; i < polyTotalForBuffer; i++) {
+                vector<double> Vx;
+                vArr.push_back(Vx);
+                double vertices = *(++vpoint);
+                vArr.at(i).push_back(vertices);
+                for (int j = 0; j < vertices; j++) {
+                        vArr.at(i).push_back(*(++vpoint));
+                        vArr.at(i).push_back(*(++vpoint));
+                }
+        }
+        // Prepping area before being copied to Pixel Buffer 
+        PolygonBuffer = new float[polyTotalForBuffer*wWidth*wLength*3]();
+
+        //Buffer drawn to screen
+        PixelBuffer = new float[wWidth * wLength * 3]();
+
+
+        //Line Draw and Rasterize the original polygons! 
         lineDrawRaster();
-        glutPostRedisplay();
-}
-void clip(int points[][2], int &vertices, int x1, int y1, int x2, int y2)
-{
-	//Sutherland-Hodgman
-	int newPoints[10][2];
-        int newVertices = 0; 
-    	for (int i = 0; i < vertices; i++) { 
-        	  
-       		int k = (i+1) % vertices; 
-        	int ix = points[i][0], iy = points[i][1]; 
-        	int kx = points[k][0], ky = points[k][1]; 
-  
-        	// Find position of first point of clipper line 
-        	int i_pos = (x2-x1) * (iy-y1) - (y2-y1) * (ix-x1); 
-  
-        	// Find position of second point 
-        	int k_pos = (x2-x1) * (ky-y1) - (y2-y1) * (kx-x1); 
-  
-        	// Both points inside 
-        	if (i_pos < 0  && k_pos < 0) {	  
-            		newPoints[newVertices][0] = kx; 
-            		newPoints[newVertices][1] = ky; 
-            		newVertices++; 
-        	}	 
-  
-        	// Only first point is outside 
-        	else if (i_pos >= 0  && k_pos < 0) {  
-            		newPoints[newVertices][0] = xInter(x1, y1, x2, y2, ix, iy, kx, ky); 
-            		newPoints[newVertices][1] = yInter(x1, y1, x2, y2, ix, iy, kx, ky); 
-            		newVertices++; 
-  
-            		newPoints[newVertices][0] = kx; 
-            		newPoints[newVertices][1] = ky; 
-            		newVertices++; 
-        	}	 
-  
-        	// Only second point is outside 
-        	else if (i_pos < 0  && k_pos >= 0) {  
-            		newPoints[newVertices][0] = xInter(x1, y1, x2, y2, ix, iy, kx, ky); 
-            		newPoints[newVertices][1] = yInter(x1, y1, x2, y2, ix, iy, kx, ky); 
-            		newVertices++; 
-        	} 
- 
-        	// Both outside 
-        	else  
-        		; //Do Nothing 
-    	}
 
-    	vertices = newVertices; 
-    	for (int i = 0; i < vertices; i++) {	 
-        	points[i][0] = newPoints[i][0]; 
-        	points[i][1] = newPoints[i][1]; 
-    	}	 
+
+        // Offer the user opportunities to transform! 
+        translate_menu = glutCreateMenu(translateMenu);
+                glutAddMenuEntry("Square", 0);
+                glutAddMenuEntry("Triangle", 1);
+                glutAddMenuEntry("Pentagon", 2);
+
+        scale_menu = glutCreateMenu(scaleMenu);
+                glutAddMenuEntry("Square", 0);
+                glutAddMenuEntry("Triangle", 1);
+                glutAddMenuEntry("Pentagon", 2);
+
+        rotate_menu = glutCreateMenu(rotateMenu);
+                glutAddMenuEntry("Square", 0);
+                glutAddMenuEntry("Triangle", 1);
+                glutAddMenuEntry("Pentagon", 2);
+
+        glutCreateMenu(mainMenu);
+                glutAddSubMenu("Translate", translate_menu);
+                glutAddSubMenu("Scale", scale_menu);
+                glutAddSubMenu("Rotate", rotate_menu);
+                glutAddSubMenu("Clipping", clipping_menu);
+        glutAttachMenu(GLUT_RIGHT_BUTTON);
+
+
+        glutDisplayFunc(display);
+
+
+        glutMainLoop();//main display loop, will display until terminate
+
+        return 0;
 }
-int xInter(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4)
-{
-	return ((x1*y2 - y1*x2) * (x3-x4) - (x1-x2) * (x3*y4 - y3*x4)) / ((x1-x2) * (y3-y4) - (y1-y2) * (x3-x4));  
-}
-int yInter(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4)
-{
-	return ((x1*y2 - y1*x2) * (y3-y4) - (y1-y2) * (x3*y4 - y3*x4)) / ((x1-x2) * (y3-y4) - (y1-y2) * (x3-x4));  
-}
+
