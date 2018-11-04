@@ -17,7 +17,7 @@ float *PolygonBuffer;
 vector<vector<double>> vArr;
 int wWidth;
 int wLength;
-
+inline void mainMenu(int pid) {;}
 //main display loop, this function will be called again and again by OpenGL
 void display()
 {

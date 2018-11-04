@@ -13,6 +13,7 @@ using namespace std;
 
 //global variables
 
+inline void mainMenu(int pid) {;}
 void init()
 {
 	glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -47,6 +48,18 @@ void background()
 	glClear(GL_COLOR_BUFFER_BIT); 
 	glFlush(); 
 }
+void translateMenu(int pid)
+{
+	;
+}
+void scaleMenu(int pid) 
+{
+	;
+}
+void rotateMenu(int pid)
+{
+	;
+}
 
 int main(int argc, char** argv) 
 {
@@ -62,7 +75,7 @@ int main(int argc, char** argv)
 	int windowID = glutCreateWindow("Polyhedron Orthographic Projections: XY, XZ, YZ from left to right and top down");  
 	glutDisplayFunc(background);
 
-//	int scale_menu, rotate_menu, translate_menu; //For use in graphical menu
+	int scale_menu, rotate_menu, translate_menu; //For use in graphical menu
 
         vector<double> v; // The main V
         double num;
@@ -91,7 +104,9 @@ int main(int argc, char** argv)
 	init(); 
 	glutDisplayFunc(lineSegment);
 
-        /* Offer the user opportunities to 3D transform! 
+	glutSetWindow(windowID); 
+
+        // Offer the user opportunities to 3D transform! 
         translate_menu = glutCreateMenu(translateMenu);
                 glutAddMenuEntry("Tetrahedron", 0);
                 glutAddMenuEntry("Hexahedron", 1);
@@ -112,7 +127,7 @@ int main(int argc, char** argv)
                 glutAddSubMenu("Scale", scale_menu);
                 glutAddSubMenu("Rotate", rotate_menu);
         glutAttachMenu(GLUT_RIGHT_BUTTON);
-*/
+
 
 
 
