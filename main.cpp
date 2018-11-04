@@ -10,18 +10,6 @@
 
 using namespace std;
 
-/*In this project, to draw lines you may use: 
- glBegin(GL_LINES);
-    glColor3f(1.f, 0.f, 0.f); // Set the color for every subsequent vertex to red
-    glVertex2f(point1x, point1y); // Give OpenGL the first vertex, etc. You can put more glColor3fs between to get multicolor lines.
-    glVertex2f(point2x, point2y);
-    glColor3f(0.f, 0.f, 1.f); // Now I'm a blueberry
-    glVertex2f(point3x, point3y);
-        (...)
-glEnd();
-
-You may not use: gluOrtho2D, gluLookAt, or functions to rotate, scale, or translate 
-*/
 
 //global variables
 
@@ -32,12 +20,12 @@ void init()
 	//Bounding Box: 
 	glOrtho(-500, 500, -500, 500, -500, 500); 
 }
-void init2()
+/*void init2()
 {
 	glClearColor(1.0, 1.0, 1.0, 0.0);
         glMatrixMode(GL_PROJECTION);	
 	glOrtho(-500, 500, -500, 500, -500, 500);
-}
+}*/
 void lineSegment()
 {
 	glClear(GL_COLOR_BUFFER_BIT); 
@@ -50,21 +38,46 @@ void lineSegment()
 	glEnd(); 
 	glFlush(); 
 }
-void titles() 
+void background() 
 {
+	glClearColor(1.0, 1.0, 1.0, 0.0);
+        glMatrixMode(GL_PROJECTION);
+        glOrtho(-500, 500, -500, 500, -500, 500);
+
 	glClear(GL_COLOR_BUFFER_BIT); 
 	glFlush(); 
 }
 
 int main(int argc, char** argv) 
 {
+	if (argc != 2) {
+		cout << "Usage: p1 <input_file_name> \n";
+		exit(1); 
+	}	
+
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
 	glutInitWindowPosition(100, 100); 
 	glutInitWindowSize(800, 800); 
-	int windowID = glutCreateWindow("An Example OpenGL Program"); 
-	init2(); 
-	glutDisplayFunc(titles);
+	int windowID = glutCreateWindow("Polyhedron Orthographic Projections: XY, XZ, YZ from left to right and top down");  
+	glutDisplayFunc(background);
+
+//	int scale_menu, rotate_menu, translate_menu; //For use in graphical menu
+
+        vector<double> v; // The main V
+        double num;
+        fstream file;
+
+        file.open(argv[1]);
+
+        if (!file) {
+                cerr << "Unable to open file\n";
+                exit(1);
+        }
+        while (file >> num)
+                v.push_back(num); //Initial vector for all polygons
+        file.close();
+
 
 	int window1 = glutCreateSubWindow(windowID, 25, 50, 320, 320);
 	init();
@@ -76,7 +89,32 @@ int main(int argc, char** argv)
 
 	int window3 = glutCreateSubWindow(windowID, 425, 450, 320, 320); 
 	init(); 
-	glutDisplayFunc(lineSegment); 
+	glutDisplayFunc(lineSegment);
+
+        /* Offer the user opportunities to 3D transform! 
+        translate_menu = glutCreateMenu(translateMenu);
+                glutAddMenuEntry("Tetrahedron", 0);
+                glutAddMenuEntry("Hexahedron", 1);
+                glutAddMenuEntry("Octahedron", 2);
+
+        scale_menu = glutCreateMenu(scaleMenu);
+                glutAddMenuEntry("Tetrahedron", 0);
+                glutAddMenuEntry("Hexahedron", 1);
+                glutAddMenuEntry("Octahedron", 2);
+
+        rotate_menu = glutCreateMenu(rotateMenu);
+                glutAddMenuEntry("Tetrahedron", 0);
+                glutAddMenuEntry("Hexahedron", 1);
+                glutAddMenuEntry("Octahedron", 2);
+
+        glutCreateMenu(mainMenu);
+                glutAddSubMenu("Translate", translate_menu);
+                glutAddSubMenu("Scale", scale_menu);
+                glutAddSubMenu("Rotate", rotate_menu);
+        glutAttachMenu(GLUT_RIGHT_BUTTON);
+*/
+
+
 
 	glutMainLoop(); 
 
