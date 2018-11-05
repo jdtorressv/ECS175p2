@@ -25,45 +25,81 @@ void init()
 }
 void drawSceneXY()
 {
-	
 	glClear(GL_COLOR_BUFFER_BIT); 
         glLoadIdentity();
-	glBegin(GL_LINES);
-		glColor3f(1.0, 1.0, 1.0); 
-		glVertex2f(-450, -450);
-		glVertex2f(450, 450);
-		glVertex2f(450, -450);
-		glVertex2f(-450, 450); 
-	glEnd(); 
-	glFlush(); 
+	//XY: All Z values are ignored 
+	for (int i = 0; i < lArr.size(); i++) { //For each polyhedron
+		for (int j = 1; j < lArr.at(i).size(); j+=2) { //For each each line in the polyhedron 
+			//First vArr entry appears as [6,0,100,200,200,100,200,0,300,200,200,300,200,100,200,400,100,200,0]
+			//First lArr entry appears as [12,1,2,1,3,2,4,3,4,1,5,2,5,3,5,4,5,1,6,2,6,3,6,4,6]
+			int x1 = (int)vArr.at(i).at((lArr.at(i).at(j) - 1)*3+1);    //X of first point
+                        int y1 = (int)vArr.at(i).at((lArr.at(i).at(j) - 1)*3+2);    //Y of first point
+                        int z1 = (int)vArr.at(i).at((lArr.at(i).at(j) - 1)*3+3);    //Z of first point
+
+                        int x2 = (int)vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+1);   //X of second point
+                        int y2 = (int)vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+2);   //Y of second point
+                        int z2 = (int)vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+3);   //Z of second point
+
+			glBegin(GL_LINES);
+				glColor3f(1.0, 1.0, 1.0); 
+				glVertex2f(x1, y1);
+				glVertex2f(x2, y2);
+			glEnd(); 
+			glFlush(); 
+		}
+	}
 }
 void drawSceneXZ()
 {
         glClear(GL_COLOR_BUFFER_BIT);
         glLoadIdentity();
-        glBegin(GL_LINES);
-                glColor3f(1.0, 1.0, 1.0);
-                glVertex2f(-450, -450);
-                glVertex2f(450, 450);
-                glVertex2f(450, -450);
-                glVertex2f(-450, 450);
-        glEnd();
-        glFlush();
+	//XZ: All Y values are ignored 
+        for (int i = 0; i < lArr.size(); i++) { //For each polyhedron
+                for (int j = 1; j < lArr.at(i).size(); j+=2) { //For each each line in the polyhedron 
+                        //First vArr entry appears as [6,0,100,200,200,100,200,0,300,200,200,300,200,100,200,400,100,200,0]
+                        //First lArr entry appears as [12,1,2,1,3,2,4,3,4,1,5,2,5,3,5,4,5,1,6,2,6,3,6,4,6]
+                        int x1 = (int)vArr.at(i).at((lArr.at(i).at(j) - 1)*3+1);    //X of first point
+                        int y1 = (int)vArr.at(i).at((lArr.at(i).at(j) - 1)*3+2);    //Y of first point
+                        int z1 = (int)vArr.at(i).at((lArr.at(i).at(j) - 1)*3+3);    //Z of first point
 
+                        int x2 = (int)vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+1);   //X of second point
+                        int y2 = (int)vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+2);   //Y of second point
+                        int z2 = (int)vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+3);   //Z of second point
+
+                        glBegin(GL_LINES);
+                                glColor3f(1.0, 1.0, 1.0);
+                                glVertex2f(x1, z1);
+                                glVertex2f(x2, z2);
+                        glEnd();
+                        glFlush();
+                }
+        }
 }
 void drawSceneYZ()
 {
         glClear(GL_COLOR_BUFFER_BIT);
         glLoadIdentity();
-        glBegin(GL_LINES);
-                glColor3f(1.0, 1.0, 1.0);
-                glVertex2f(-450, -450);
-                glVertex2f(450, 450);
-                glVertex2f(450, -450);
-                glVertex2f(-450, 450);
-        glEnd();
-        glFlush();
+	//YZ: All X values are ignored 
+        for (int i = 0; i < lArr.size(); i++) { //For each polyhedron
+                for (int j = 1; j < lArr.at(i).size(); j+=2) { //For each each line in the polyhedron 
+                        //First vArr entry appears as [6,0,100,200,200,100,200,0,300,200,200,300,200,100,200,400,100,200,0]
+                        //First lArr entry appears as [12,1,2,1,3,2,4,3,4,1,5,2,5,3,5,4,5,1,6,2,6,3,6,4,6]
+                        int x1 = (int)vArr.at(i).at((lArr.at(i).at(j) - 1)*3+1);    //X of first point
+                        int y1 = (int)vArr.at(i).at((lArr.at(i).at(j) - 1)*3+2);    //Y of first point
+                        int z1 = (int)vArr.at(i).at((lArr.at(i).at(j) - 1)*3+3);    //Z of first point
 
+                        int x2 = (int)vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+1);   //X of second point
+                        int y2 = (int)vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+2);   //Y of second point
+                        int z2 = (int)vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+3);   //Z of second point
+
+                        glBegin(GL_LINES);
+                                glColor3f(1.0, 1.0, 1.0);
+                                glVertex2f(y1, z1);
+                                glVertex2f(y2, z2);
+                        glEnd();
+                        glFlush();
+                }
+        }
 }
 void background() 
 {
@@ -77,7 +113,7 @@ void background()
 }
 void translateMenu(int pid)
 {
-        ofstream file;
+        /*ofstream file;
         file.open("inputFile.txt", std::ofstream::out | std::ofstream::trunc);
         if (!file) {
                 cerr << "Unable to open file\n";
@@ -89,11 +125,11 @@ void translateMenu(int pid)
                         file << vArr.at(i).at(j) << '\n';
         }
 
-	glutPostRedisplay();
+	glutPostRedisplay()*/;
 }
 void scaleMenu(int pid) 
 {
-	ofstream file;
+	/*ofstream file;
         file.open("inputFile.txt", std::ofstream::out | std::ofstream::trunc);
         if (!file) {
                 cerr << "Unable to open file\n";
@@ -105,11 +141,11 @@ void scaleMenu(int pid)
                         file << vArr.at(i).at(j) << '\n';
         }
  
-	glutPostRedisplay();
+	glutPostRedisplay()*/;
 }
 void rotateMenu(int pid)
 {
-        ofstream file;
+        /*ofstream file;
         file.open("inputFile.txt", std::ofstream::out | std::ofstream::trunc);
         if (!file) {
                 cerr << "Unable to open file\n";
@@ -121,7 +157,8 @@ void rotateMenu(int pid)
                         file << vArr.at(i).at(j) << '\n';
         }
 
-        glutPostRedisplay();
+        glutPostRedisplay()*/;
+	
 }
 int main(int argc, char** argv) 
 {
@@ -213,8 +250,6 @@ int main(int argc, char** argv)
                 glutAddSubMenu("Scale", scale_menu);
                 glutAddSubMenu("Rotate", rotate_menu);
         glutAttachMenu(GLUT_RIGHT_BUTTON);
-
-
 
 
 	glutMainLoop(); 
