@@ -10,11 +10,14 @@
 
 using namespace std;
 
+#define ERROR 1 
+#define NORM 500.0 
 
 //global variables
 vector<vector<double>> vArr;
 vector<vector<double>> lArr;
 int windowXY, windowXZ, windowYZ; 
+char* fileName;  
 
 inline void mainMenu(int pid) {;}
 void init()
@@ -116,21 +119,39 @@ void background()
 }
 void translateMenu(int pid)
 {
-        
+        float x, y, z;
+        int vertices = vArr.at(pid).at(0);
+	cout << "Number of vertices is " << vertices << endl; 
+        cout << "Please enter the x, y, and z translation values:\n";
+        cin >> x >> y >> z; 
+	cout << "You entered " << x << ", " << y << ", " << z << endl; 
+        for (int i = 0; i < vertices; i++) {
+                vArr.at(pid).at(1+3*i) += x/NORM;
+                vArr.at(pid).at(2+3*i) += y/NORM;
+		vArr.at(pid).at(3+3*i) += z/NORM; 
+        }
+	cout << "Made it here in translate\n"; 
 	
-	/*ofstream file;
-        file.open("inputFile.txt", std::ofstream::out | std::ofstream::trunc);
+	//Write changes back to file 
+	ofstream file;
+        file.open(fileName, std::ofstream::out | std::ofstream::trunc);
         if (!file) {
                 cerr << "Unable to open file\n";
-                exit(1);   // call system to stop
-        }
-        file << vArr.size() << '\n';
-        for (int i = 0; i < vArr.size(); i++) {
-                for (int j = 0; j < vArr.at(i).size(); j++)
-                        file << vArr.at(i).at(j) << '\n';
+                exit(ERROR);   // call system to stop
         }
 
-	glutPostRedisplay()*/;
+        file << vArr.size() << '\n'; 
+        for (int i = 0; i < vArr.size(); i++) {
+		file << '\n' << vArr.at(i).at(0) << '\n';  
+                for (int j = 1; j < vArr.at(i).size(); j+=3)
+                        file << vArr.at(i).at(j)*NORM << " " << vArr.at(i).at(j+1)*NORM << " " << vArr.at(i).at(j+2)*NORM << '\n';
+		file << lArr.at(i).at(0) << '\n'; 
+		for (int k = 1; k < lArr.at(i).size(); k+=2)
+			file << lArr.at(i).at(k) << " " << lArr.at(i).at(k) << '\n'; 	
+        }
+
+	//Display new scene 
+	glutPostRedisplay();
 }
 void scaleMenu(int pid) 
 {
@@ -138,7 +159,7 @@ void scaleMenu(int pid)
         file.open("inputFile.txt", std::ofstream::out | std::ofstream::trunc);
         if (!file) {
                 cerr << "Unable to open file\n";
-                exit(1);   // call system to stop
+                exit(ERROR);   // call system to stop
         }
         file << vArr.size() << '\n';
         for (int i = 0; i < vArr.size(); i++) {
@@ -154,7 +175,7 @@ void rotateMenu(int pid)
         file.open("inputFile.txt", std::ofstream::out | std::ofstream::trunc);
         if (!file) {
                 cerr << "Unable to open file\n";
-                exit(1);   // call system to stop
+                exit(ERROR);   // call system to stop
         }
         file << vArr.size() << '\n';
         for (int i = 0; i < vArr.size(); i++) {
@@ -177,14 +198,14 @@ void vertexMenu(int pid)
 			break; 
 	}
 	for (int i = 1; i < vArr.at(pid).size(); i+=3) 
-		cout << "(" << vArr.at(pid).at(i) << ", " << vArr.at(pid).at(i+1) << ", " << vArr.at(pid).at(i+2) << ")\n"; 
+		cout << "(" << vArr.at(pid).at(i)*NORM << ", " << vArr.at(pid).at(i+1)*NORM << ", " << vArr.at(pid).at(i+2)*NORM << ")\n"; 
 
 }
 int main(int argc, char** argv) 
 {
 	if (argc != 2) {
 		cout << "Usage: p1 <input_file_name> \n";
-		exit(1); 
+		exit(ERROR); 
 	}	
 
 	glutInit(&argc, argv);
@@ -198,12 +219,13 @@ int main(int argc, char** argv)
 
         vector<double> v; // The main V
         double num;
+	fileName = argv[1]; 
         fstream file;
-        file.open(argv[1]);
+        file.open(fileName);
 
         if (!file) {
                 cerr << "Unable to open file\n";
-                exit(1);
+                exit(ERROR);
         }
         while (file >> num)
                 v.push_back(num); //Initial vector for all polygons
@@ -220,9 +242,9 @@ int main(int argc, char** argv)
                 int vertices = (int)*(++vpoint);
                 vArr.at(i).push_back(vertices);
                 for (int j = 0; j < vertices; j++) {
-                        vArr.at(i).push_back(*(++vpoint) / 500.0);
-                        vArr.at(i).push_back(*(++vpoint) / 500.0);
-			vArr.at(i).push_back(*(++vpoint) / 500.0); 
+                        vArr.at(i).push_back(*(++vpoint) / NORM);
+                        vArr.at(i).push_back(*(++vpoint) / NORM);
+			vArr.at(i).push_back(*(++vpoint) / NORM); 
                 }
 		int lines = (int)*(++vpoint); 
 		lArr.at(i).push_back(lines);
@@ -248,6 +270,7 @@ int main(int argc, char** argv)
 	//glutDisplayFunc(drawSceneYZ); 
 	
 	glutDisplayFunc(drawScenes);
+
 
 	
 	glutSetWindow(windowID); 
