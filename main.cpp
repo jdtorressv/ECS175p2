@@ -20,7 +20,6 @@ void init()
 {
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glMatrixMode(GL_PROJECTION); 
-	//Bounding Box: 
 	//glOrtho(-500.0, 500.0, -500.0, 500.0, -500.0, 500.0); 
 }
 void drawSceneXY()
@@ -29,28 +28,16 @@ void drawSceneXY()
         glLoadIdentity();
 	glBegin(GL_LINES);
 		//XY: All Z values are ignored 
-		cout << "Drawing XY " << endl; 
 		for (int i = 0; i < lArr.size(); i++) { //For each polyhedron
-			cout << "On polyhedron " << i << endl; 
-                	cout << "There should be a total of " << (lArr.at(i).size()-1)/2.0 << " lines" << endl;
 			for (int j = 1; j < lArr.at(i).size(); j = j+2) { //For each each line in the polyhedron 
-                        	cout << "On line " << (j-1)/2.0 << endl;
 				//First vArr entry appears as [6,0,100,200,200,100,200,0,300,200,200,300,200,100,200,400,100,200,0]
 				//First lArr entry appears as [12,1,2,1,3,2,4,3,4,1,5,2,5,3,5,4,5,1,6,2,6,3,6,4,6]
 				float x1 = vArr.at(i).at((lArr.at(i).at(j) - 1)*3+1);    //X of first point
                         	float y1 = vArr.at(i).at((lArr.at(i).at(j) - 1)*3+2);    //Y of first point
-                        	float z1 = vArr.at(i).at((lArr.at(i).at(j) - 1)*3+3);    //Z of first point
 
                         	float x2 = vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+1);   //X of second point
                         	float y2 = vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+2);   //Y of second point
-                        	float z2 = vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+3);   //Z of second point
 
-                        	cout << "From " << x1 << " " << y1 << " " << z1 << " to " << x2 << " " << y2 << " " << z2 << endl;
-				/*x1 = -400; 
-				y1 = -400; 
-				x2 = 400; 
-				y2 = 400;*/
-			
 				glColor3f(1.0, 1.0, 1.0); 
 				glVertex2f(x1, y1);
 				glVertex2f(x2, y2); 
@@ -65,24 +52,16 @@ void drawSceneXZ()
         glLoadIdentity();
 	glBegin(GL_LINES);
 		//XZ: All Y values are ignored 
-		cout << "Drawing XZ" << endl; 
         	for (int i = 0; i < lArr.size(); i++) { //For each polyhedron
-			cout << "On polyhedron " << i << endl; 
-                	cout << "There should be a total of " << (lArr.at(i).size()-1)/2.0 << " lines" << endl;
                 	for (int j = 1; j < lArr.at(i).size(); j = j+2) { //For each each line in the polyhedron 
-                        	cout << "On line " << (j-1)/2.0 << endl;
                         	//First vArr entry appears as [6,0,100,200,200,100,200,0,300,200,200,300,200,100,200,400,100,200,0]
                         	//First lArr entry appears as [12,1,2,1,3,2,4,3,4,1,5,2,5,3,5,4,5,1,6,2,6,3,6,4,6]
                         	float x1 = vArr.at(i).at((lArr.at(i).at(j) - 1)*3+1);    //X of first point
-                        	float y1 = vArr.at(i).at((lArr.at(i).at(j) - 1)*3+2);    //Y of first point
                         	float z1 = vArr.at(i).at((lArr.at(i).at(j) - 1)*3+3);    //Z of first point
 
                         	float x2 = vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+1);   //X of second point
-                        	float y2 = vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+2);   //Y of second point
                         	float z2 = vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+3);   //Z of second point
 
-                        	cout << "From " << x1 << " " << y1 << " " << z1 << " to " << x2 << " " << y2 << " " << z2 << endl;
-		
                                 glColor3f(1.0, 1.0, 1.0);
                                 glVertex2f(x1, z1);
                                 glVertex2f(x2, z2);
@@ -97,24 +76,16 @@ void drawSceneYZ()
         glLoadIdentity();
 	glBegin(GL_LINES);
 		//YZ: All X values are ignored
-		cout << "Drawing YZ" << endl; 
         	for (int i = 0; i < lArr.size(); i++) { //For each polyhedron
-			cout << "On polyhedron " << i << endl; 
-			cout << "There should be a total of " << (lArr.at(i).size()-1)/2.0 << " lines" << endl;
                 	for (int j = 1; j < lArr.at(i).size(); j = j+2) { //For each each line in the polyhedron 
-                        	cout << "On line " << (j-1)/2.0 << endl;	
 				//First vArr entry appears as [6,0,100,200,200,100,200,0,300,200,200,300,200,100,200,400,100,200,0]
                         	//First lArr entry appears as [12,1,2,1,3,2,4,3,4,1,5,2,5,3,5,4,5,1,6,2,6,3,6,4,6]
-                        	float x1 = vArr.at(i).at((lArr.at(i).at(j) - 1)*3+1);    //X of first point
                         	float y1 = vArr.at(i).at((lArr.at(i).at(j) - 1)*3+2);    //Y of first point
                         	float z1 = vArr.at(i).at((lArr.at(i).at(j) - 1)*3+3);    //Z of first point
 
-                        	float x2 = vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+1);   //X of second point
                         	float y2 = vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+2);   //Y of second point
                         	float z2 = vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+3);   //Z of second point
 			
-				cout << "From " << x1 << " " << y1 << " " << z1 << " to " << x2 << " " << y2 << " " << z2 << endl; 
-                                
 				glColor3f(1.0, 1.0, 1.0);
                                 glVertex2f(y1, z1);
                                 glVertex2f(y2, z2);
@@ -182,6 +153,20 @@ void rotateMenu(int pid)
         glutPostRedisplay()*/;
 	
 }
+void vertexMenu(int pid)
+{
+	switch (pid) 
+	{
+		case 0: cout << "Present vertices of the octahedron or polhedron 0:\n";
+			break; 
+		case 1: cout << "Present vertices of the tetrahedron or polyhedron 1:\n"; 
+		        break; 
+		case 2: cout << "Present vertices of the hexahedron or polyhedron 2:\n";  	
+			break; 
+	}
+	
+
+}
 int main(int argc, char** argv) 
 {
 	if (argc != 2) {
@@ -196,7 +181,7 @@ int main(int argc, char** argv)
 	int windowID = glutCreateWindow("Polyhedron Orthographic Projections: XY, XZ, YZ from left to right and top down");  
 	glutDisplayFunc(background);
 
-	int scale_menu, rotate_menu, translate_menu; //For use in graphical menu
+	int scale_menu, rotate_menu, translate_menu, vertex_menu; //For use in graphical menu
 
         vector<double> v; // The main V
         double num;
@@ -253,24 +238,30 @@ int main(int argc, char** argv)
 
         // Offer the user opportunities to 3D transform! 
         translate_menu = glutCreateMenu(translateMenu);
-                glutAddMenuEntry("Tetrahedron", 0);
-                glutAddMenuEntry("Hexahedron", 1);
-                glutAddMenuEntry("Octahedron", 2);
+                glutAddMenuEntry("Octahedron/Polyhedron 0", 0);
+                glutAddMenuEntry("Tetrahedron/Polyhedron 1", 1);
+                glutAddMenuEntry("Hexahedron/Polyhedron 2", 2);
 
         scale_menu = glutCreateMenu(scaleMenu);
-                glutAddMenuEntry("Tetrahedron", 0);
-                glutAddMenuEntry("Hexahedron", 1);
-                glutAddMenuEntry("Octahedron", 2);
+                glutAddMenuEntry("Octahedron/Polyhedron 0", 0);
+                glutAddMenuEntry("Tetrahedron/Polyhedron 1", 1);
+                glutAddMenuEntry("Hexahedron/Polyhedron 2", 2);
 
         rotate_menu = glutCreateMenu(rotateMenu);
-                glutAddMenuEntry("Tetrahedron", 0);
-                glutAddMenuEntry("Hexahedron", 1);
-                glutAddMenuEntry("Octahedron", 2);
+                glutAddMenuEntry("Octahedron/Polyhedron 0", 0);      
+      		glutAddMenuEntry("Tetrahedron/Polyhedron 1", 1);
+                glutAddMenuEntry("Hexahedron/Polyhedron 2", 2);
+	
+	vertex_menu = glutCreateMenu(vertexMenu);
+                glutAddMenuEntry("Octahedron/Polyhedron 0", 0);
+                glutAddMenuEntry("Tetrahedron/Polyhedron 1", 1);
+                glutAddMenuEntry("Hexahedron/Polyhedron 2", 2);
 
         glutCreateMenu(mainMenu);
                 glutAddSubMenu("Translate", translate_menu);
                 glutAddSubMenu("Scale", scale_menu);
                 glutAddSubMenu("Rotate", rotate_menu);
+		glutAddSubMenu("Vertex Dump", vertex_menu); 
         glutAttachMenu(GLUT_RIGHT_BUTTON);
 
 

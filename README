@@ -10,7 +10,9 @@ the violating polyhedron portion will be clipped in its rendering. These polyhed
 orthographically into three views: XY/top/elevation, XZ/front/plan, and YZ/side/section. 
 
 Once the polyhedrons have been rendered, you may right click anywhere on the primary viewing window (but outside any of the three projection
-subwindows)and a menu will appear. In this menu you may select to translate, scale, or rotate any of the poyhedrons pictured. 
+subwindows)and a menu will appear. In this menu you may select to translate, scale, rotate, or display the vertices of any of the poyhedrons 
+pictured. 
+
 
 To translate: 
 When prompted, type the desired x, y, and z values of translation (in that order) and hit enter.
@@ -19,10 +21,13 @@ To scale:
 When prompted, type the magnitude of the scaling and hit enter. 
 
 To rotate: 
-When prompted, type the angle of rotation in radians. A positive angle will rotate the selected polygon counter-clockwise.  
+When prompted, type the angle of rotation in radians. A positive angle will rotate the selected polygon counter-clockwise.
+
+To view a polyhedron's vertices:
+No actions are required beyond selecting your polyhedron of choice.   
+
 
 The following algorithm/code line references indicate that algorithm's implemenation location as found in main.cpp:
-
 
 Digital Differential Analyzer.....................................175-191
 Bresenham's Algorithm.............................................192-283
