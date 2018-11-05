@@ -164,7 +164,8 @@ void vertexMenu(int pid)
 		case 2: cout << "Present vertices of the hexahedron or polyhedron 2:\n";  	
 			break; 
 	}
-	
+	for (int i = 1; i < vArr.at(pid).size(); i+=3) 
+		cout << "(" << vArr.at(pid).at(i) << ", " << vArr.at(pid).at(i+1) << ", " << vArr.at(pid).at(i+2) << ")\n"; 
 
 }
 int main(int argc, char** argv) 
