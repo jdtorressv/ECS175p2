@@ -21,7 +21,7 @@ void init()
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glMatrixMode(GL_PROJECTION); 
 	//Bounding Box: 
-	glOrtho(-500, 500, -500, 500, -500, 500); 
+	//glOrtho(-500.0, 500.0, -500.0, 500.0, -500.0, 500.0); 
 }
 void drawSceneXY()
 {
@@ -127,7 +127,7 @@ void background()
 {
 	glClearColor(1.0, 1.0, 1.0, 0.0);
         glMatrixMode(GL_PROJECTION);
-        glOrtho(-500, 500, -500, 500, -500, 500);
+        //glOrtho(-500.0, 500.0, -500.0, 500.0, -500.0, 500.0);
 
 	glClear(GL_COLOR_BUFFER_BIT);
         glLoadIdentity();	
@@ -222,9 +222,9 @@ int main(int argc, char** argv)
                 int vertices = (int)*(++vpoint);
                 vArr.at(i).push_back(vertices);
                 for (int j = 0; j < vertices; j++) {
-                        vArr.at(i).push_back(*(++vpoint));
-                        vArr.at(i).push_back(*(++vpoint));
-			vArr.at(i).push_back(*(++vpoint)); 
+                        vArr.at(i).push_back(*(++vpoint) / 500.0);
+                        vArr.at(i).push_back(*(++vpoint) / 500.0);
+			vArr.at(i).push_back(*(++vpoint) / 500.0); 
                 }
 		int lines = (int)*(++vpoint); 
 		lArr.at(i).push_back(lines);
