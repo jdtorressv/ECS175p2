@@ -13,6 +13,7 @@ using namespace std;
 
 //global variables
 vector<vector<double>> vArr;
+vector<vector<double>> lArr; 
 
 inline void mainMenu(int pid) {;}
 void init()
@@ -22,7 +23,7 @@ void init()
 	//Bounding Box: 
 	glOrtho(-500, 500, -500, 500, -500, 500); 
 }
-void lineSegment()
+void drawSceneXY()
 {
 	
 	glClear(GL_COLOR_BUFFER_BIT); 
@@ -35,6 +36,34 @@ void lineSegment()
 		glVertex2f(-450, 450); 
 	glEnd(); 
 	glFlush(); 
+}
+void drawSceneXZ()
+{
+        glClear(GL_COLOR_BUFFER_BIT);
+        glLoadIdentity();
+        glBegin(GL_LINES);
+                glColor3f(1.0, 1.0, 1.0);
+                glVertex2f(-450, -450);
+                glVertex2f(450, 450);
+                glVertex2f(450, -450);
+                glVertex2f(-450, 450);
+        glEnd();
+        glFlush();
+
+}
+void drawSceneYZ()
+{
+        glClear(GL_COLOR_BUFFER_BIT);
+        glLoadIdentity();
+        glBegin(GL_LINES);
+                glColor3f(1.0, 1.0, 1.0);
+                glVertex2f(-450, -450);
+                glVertex2f(450, 450);
+                glVertex2f(450, -450);
+                glVertex2f(-450, 450);
+        glEnd();
+        glFlush();
+
 }
 void background() 
 {
@@ -113,7 +142,6 @@ int main(int argc, char** argv)
         vector<double> v; // The main V
         double num;
         fstream file;
-
         file.open(argv[1]);
 
         if (!file) {
@@ -128,28 +156,39 @@ int main(int argc, char** argv)
 	int polyTotal = (int)*vpoint;
 	
 	for (int i = 0; i < polyTotal; i++) {
-        	vector<double> Vx;
-                vArr.push_back(Vx);
-                double vertices = *(++vpoint);
+        	vector<double> Va;
+		vector<double> Vb; 
+                vArr.push_back(Va);
+		lArr.push_back(Vb); 
+                int vertices = (int)*(++vpoint);
                 vArr.at(i).push_back(vertices);
                 for (int j = 0; j < vertices; j++) {
                         vArr.at(i).push_back(*(++vpoint));
                         vArr.at(i).push_back(*(++vpoint));
+			vArr.at(i).push_back(*(++vpoint)); 
                 }
+		int lines = (int)*(++vpoint); 
+		lArr.at(i).push_back(lines); 
+	       	for (int k = 0; k < lines; k++) {
+			vArr.at(i).push_back(*(++vpoint)); 
+			vArr.at(i).push_back(*(++vpoint));
+		}
         }
 
-
+	//XY
 	int window1 = glutCreateSubWindow(windowID, 25, 50, 320, 320);
 	init();
-	glutDisplayFunc(lineSegment); 
+	glutDisplayFunc(drawSceneXY); 
 
+	//XZ
 	int window2 = glutCreateSubWindow(windowID, 25, 450, 320, 320); 
 	init(); 
-	glutDisplayFunc(lineSegment);	
+	glutDisplayFunc(drawSceneXZ);	
 
+	//YZ
 	int window3 = glutCreateSubWindow(windowID, 425, 450, 320, 320); 
 	init(); 
-	glutDisplayFunc(lineSegment);
+	glutDisplayFunc(drawSceneYZ);
 
 	glutSetWindow(windowID); 
 

@@ -1,6 +1,6 @@
 all: p2
 
-p1: main.o
+p2: main.o
 	g++ main.o -o p2 -lglut -lGL 
 main.o: main.cpp  
 	g++ -c main.cpp -lglut -lGL 

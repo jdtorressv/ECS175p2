@@ -7,7 +7,7 @@ Instructions:
 Simply type "make" to compile. To run, enter "p2" followed by the name of the input file containing the polyhedron data you would like
 to specify. The values making up the vertices in this file may be positive or negative. If any value exceeds an absolute value of 500.0,
 the violating polyhedron portion will be clipped in its rendering. These polyhedrons will be rendered as wireframes and projected 
-orthographically into three views: XZ/front/plan, XY/top/elevation, and YZ/side/section. 
+orthographically into three views: XY/top/elevation, XZ/front/plan, and YZ/side/section. 
 
 Once the polyhedrons have been rendered, you may right click anywhere on the primary viewing window (but outside any of the three projection
 subwindows)and a menu will appear. In this menu you may select to translate, scale, or rotate any of the poyhedrons pictured. 
