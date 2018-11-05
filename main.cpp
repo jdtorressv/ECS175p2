@@ -13,7 +13,8 @@ using namespace std;
 
 //global variables
 vector<vector<double>> vArr;
-vector<vector<double>> lArr; 
+vector<vector<double>> lArr;
+int windowXY, windowXZ, windowYZ; 
 
 inline void mainMenu(int pid) {;}
 void init()
@@ -94,6 +95,15 @@ void drawSceneYZ()
 	glEnd(); 
 	glFlush(); 
 }
+void drawScenes()
+{
+        glutSetWindow(windowXY);
+        drawSceneXY();
+        glutSetWindow(windowXZ);
+        drawSceneXZ();
+        glutSetWindow(windowYZ);
+        drawSceneYZ();
+}
 void background() 
 {
 	glClearColor(1.0, 1.0, 1.0, 0.0);
@@ -106,7 +116,9 @@ void background()
 }
 void translateMenu(int pid)
 {
-        /*ofstream file;
+        
+	
+	/*ofstream file;
         file.open("inputFile.txt", std::ofstream::out | std::ofstream::trunc);
         if (!file) {
                 cerr << "Unable to open file\n";
@@ -221,20 +233,23 @@ int main(int argc, char** argv)
         }
 
 	//XY
-	int window1 = glutCreateSubWindow(windowID, 25, 50, 320, 320);
+	windowXY = glutCreateSubWindow(windowID, 25, 50, 320, 320);
 	init();
-	glutDisplayFunc(drawSceneXY); 
+	//glutDisplayFunc(drawSceneXY); 
 
 	//XZ
-	int window2 = glutCreateSubWindow(windowID, 25, 450, 320, 320); 
+	windowXZ = glutCreateSubWindow(windowID, 25, 450, 320, 320); 
 	init(); 
-	glutDisplayFunc(drawSceneXZ);	
+	//glutDisplayFunc(drawSceneXZ);	
 
 	//YZ
-	int window3 = glutCreateSubWindow(windowID, 425, 450, 320, 320); 
-	init(); 
-	glutDisplayFunc(drawSceneYZ);
+	windowYZ = glutCreateSubWindow(windowID, 425, 450, 320, 320); 
+	init();
+	//glutDisplayFunc(drawSceneYZ); 
+	
+	glutDisplayFunc(drawScenes);
 
+	
 	glutSetWindow(windowID); 
 
         // Offer the user opportunities to 3D transform! 
