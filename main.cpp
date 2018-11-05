@@ -27,79 +27,101 @@ void drawSceneXY()
 {
 	glClear(GL_COLOR_BUFFER_BIT); 
         glLoadIdentity();
-	//XY: All Z values are ignored 
-	for (int i = 0; i < lArr.size(); i++) { //For each polyhedron
-		for (int j = 1; j < lArr.at(i).size(); j+=2) { //For each each line in the polyhedron 
-			//First vArr entry appears as [6,0,100,200,200,100,200,0,300,200,200,300,200,100,200,400,100,200,0]
-			//First lArr entry appears as [12,1,2,1,3,2,4,3,4,1,5,2,5,3,5,4,5,1,6,2,6,3,6,4,6]
-			int x1 = (int)vArr.at(i).at((lArr.at(i).at(j) - 1)*3+1);    //X of first point
-                        int y1 = (int)vArr.at(i).at((lArr.at(i).at(j) - 1)*3+2);    //Y of first point
-                        int z1 = (int)vArr.at(i).at((lArr.at(i).at(j) - 1)*3+3);    //Z of first point
+	glBegin(GL_LINES);
+		//XY: All Z values are ignored 
+		cout << "Drawing XY " << endl; 
+		for (int i = 0; i < lArr.size(); i++) { //For each polyhedron
+			cout << "On polyhedron " << i << endl; 
+                	cout << "There should be a total of " << (lArr.at(i).size()-1)/2.0 << " lines" << endl;
+			for (int j = 1; j < lArr.at(i).size(); j = j+2) { //For each each line in the polyhedron 
+                        	cout << "On line " << (j-1)/2.0 << endl;
+				//First vArr entry appears as [6,0,100,200,200,100,200,0,300,200,200,300,200,100,200,400,100,200,0]
+				//First lArr entry appears as [12,1,2,1,3,2,4,3,4,1,5,2,5,3,5,4,5,1,6,2,6,3,6,4,6]
+				float x1 = vArr.at(i).at((lArr.at(i).at(j) - 1)*3+1);    //X of first point
+                        	float y1 = vArr.at(i).at((lArr.at(i).at(j) - 1)*3+2);    //Y of first point
+                        	float z1 = vArr.at(i).at((lArr.at(i).at(j) - 1)*3+3);    //Z of first point
 
-                        int x2 = (int)vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+1);   //X of second point
-                        int y2 = (int)vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+2);   //Y of second point
-                        int z2 = (int)vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+3);   //Z of second point
+                        	float x2 = vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+1);   //X of second point
+                        	float y2 = vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+2);   //Y of second point
+                        	float z2 = vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+3);   //Z of second point
 
-			glBegin(GL_LINES);
+                        	cout << "From " << x1 << " " << y1 << " " << z1 << " to " << x2 << " " << y2 << " " << z2 << endl;
+				/*x1 = -400; 
+				y1 = -400; 
+				x2 = 400; 
+				y2 = 400;*/
+			
 				glColor3f(1.0, 1.0, 1.0); 
 				glVertex2f(x1, y1);
-				glVertex2f(x2, y2);
-			glEnd(); 
-			glFlush(); 
+				glVertex2f(x2, y2); 
+			}
 		}
-	}
+	glEnd(); 
+	glFlush(); 
 }
 void drawSceneXZ()
 {
         glClear(GL_COLOR_BUFFER_BIT);
         glLoadIdentity();
-	//XZ: All Y values are ignored 
-        for (int i = 0; i < lArr.size(); i++) { //For each polyhedron
-                for (int j = 1; j < lArr.at(i).size(); j+=2) { //For each each line in the polyhedron 
-                        //First vArr entry appears as [6,0,100,200,200,100,200,0,300,200,200,300,200,100,200,400,100,200,0]
-                        //First lArr entry appears as [12,1,2,1,3,2,4,3,4,1,5,2,5,3,5,4,5,1,6,2,6,3,6,4,6]
-                        int x1 = (int)vArr.at(i).at((lArr.at(i).at(j) - 1)*3+1);    //X of first point
-                        int y1 = (int)vArr.at(i).at((lArr.at(i).at(j) - 1)*3+2);    //Y of first point
-                        int z1 = (int)vArr.at(i).at((lArr.at(i).at(j) - 1)*3+3);    //Z of first point
+	glBegin(GL_LINES);
+		//XZ: All Y values are ignored 
+		cout << "Drawing XZ" << endl; 
+        	for (int i = 0; i < lArr.size(); i++) { //For each polyhedron
+			cout << "On polyhedron " << i << endl; 
+                	cout << "There should be a total of " << (lArr.at(i).size()-1)/2.0 << " lines" << endl;
+                	for (int j = 1; j < lArr.at(i).size(); j = j+2) { //For each each line in the polyhedron 
+                        	cout << "On line " << (j-1)/2.0 << endl;
+                        	//First vArr entry appears as [6,0,100,200,200,100,200,0,300,200,200,300,200,100,200,400,100,200,0]
+                        	//First lArr entry appears as [12,1,2,1,3,2,4,3,4,1,5,2,5,3,5,4,5,1,6,2,6,3,6,4,6]
+                        	float x1 = vArr.at(i).at((lArr.at(i).at(j) - 1)*3+1);    //X of first point
+                        	float y1 = vArr.at(i).at((lArr.at(i).at(j) - 1)*3+2);    //Y of first point
+                        	float z1 = vArr.at(i).at((lArr.at(i).at(j) - 1)*3+3);    //Z of first point
 
-                        int x2 = (int)vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+1);   //X of second point
-                        int y2 = (int)vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+2);   //Y of second point
-                        int z2 = (int)vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+3);   //Z of second point
+                        	float x2 = vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+1);   //X of second point
+                        	float y2 = vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+2);   //Y of second point
+                        	float z2 = vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+3);   //Z of second point
 
-                        glBegin(GL_LINES);
+                        	cout << "From " << x1 << " " << y1 << " " << z1 << " to " << x2 << " " << y2 << " " << z2 << endl;
+		
                                 glColor3f(1.0, 1.0, 1.0);
                                 glVertex2f(x1, z1);
                                 glVertex2f(x2, z2);
-                        glEnd();
-                        glFlush();
-                }
-        }
+                	}
+        	}
+	glEnd(); 
+	glFlush(); 
 }
 void drawSceneYZ()
 {
         glClear(GL_COLOR_BUFFER_BIT);
         glLoadIdentity();
-	//YZ: All X values are ignored 
-        for (int i = 0; i < lArr.size(); i++) { //For each polyhedron
-                for (int j = 1; j < lArr.at(i).size(); j+=2) { //For each each line in the polyhedron 
-                        //First vArr entry appears as [6,0,100,200,200,100,200,0,300,200,200,300,200,100,200,400,100,200,0]
-                        //First lArr entry appears as [12,1,2,1,3,2,4,3,4,1,5,2,5,3,5,4,5,1,6,2,6,3,6,4,6]
-                        int x1 = (int)vArr.at(i).at((lArr.at(i).at(j) - 1)*3+1);    //X of first point
-                        int y1 = (int)vArr.at(i).at((lArr.at(i).at(j) - 1)*3+2);    //Y of first point
-                        int z1 = (int)vArr.at(i).at((lArr.at(i).at(j) - 1)*3+3);    //Z of first point
+	glBegin(GL_LINES);
+		//YZ: All X values are ignored
+		cout << "Drawing YZ" << endl; 
+        	for (int i = 0; i < lArr.size(); i++) { //For each polyhedron
+			cout << "On polyhedron " << i << endl; 
+			cout << "There should be a total of " << (lArr.at(i).size()-1)/2.0 << " lines" << endl;
+                	for (int j = 1; j < lArr.at(i).size(); j = j+2) { //For each each line in the polyhedron 
+                        	cout << "On line " << (j-1)/2.0 << endl;	
+				//First vArr entry appears as [6,0,100,200,200,100,200,0,300,200,200,300,200,100,200,400,100,200,0]
+                        	//First lArr entry appears as [12,1,2,1,3,2,4,3,4,1,5,2,5,3,5,4,5,1,6,2,6,3,6,4,6]
+                        	float x1 = vArr.at(i).at((lArr.at(i).at(j) - 1)*3+1);    //X of first point
+                        	float y1 = vArr.at(i).at((lArr.at(i).at(j) - 1)*3+2);    //Y of first point
+                        	float z1 = vArr.at(i).at((lArr.at(i).at(j) - 1)*3+3);    //Z of first point
 
-                        int x2 = (int)vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+1);   //X of second point
-                        int y2 = (int)vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+2);   //Y of second point
-                        int z2 = (int)vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+3);   //Z of second point
-
-                        glBegin(GL_LINES);
-                                glColor3f(1.0, 1.0, 1.0);
+                        	float x2 = vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+1);   //X of second point
+                        	float y2 = vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+2);   //Y of second point
+                        	float z2 = vArr.at(i).at((lArr.at(i).at(j+1) - 1)*3+3);   //Z of second point
+			
+				cout << "From " << x1 << " " << y1 << " " << z1 << " to " << x2 << " " << y2 << " " << z2 << endl; 
+                                
+				glColor3f(1.0, 1.0, 1.0);
                                 glVertex2f(y1, z1);
                                 glVertex2f(y2, z2);
-                        glEnd();
-                        glFlush();
-                }
-        }
+                	}
+        	}
+	glEnd(); 
+	glFlush(); 
 }
 void background() 
 {
@@ -205,10 +227,10 @@ int main(int argc, char** argv)
 			vArr.at(i).push_back(*(++vpoint)); 
                 }
 		int lines = (int)*(++vpoint); 
-		lArr.at(i).push_back(lines); 
+		lArr.at(i).push_back(lines);
 	       	for (int k = 0; k < lines; k++) {
-			vArr.at(i).push_back(*(++vpoint)); 
-			vArr.at(i).push_back(*(++vpoint));
+			lArr.at(i).push_back(*(++vpoint));
+			lArr.at(i).push_back(*(++vpoint));
 		}
         }
 
