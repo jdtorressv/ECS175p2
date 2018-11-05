@@ -4,24 +4,22 @@ jdtorres@ucdavis.edu
 
 Instructions:
  
-Simply type "make" to compile. To run, enter "p1" followed by two integer arguments for the viewing window's width and height respectively. 
-Arguments of 600, 600 do nicely. You will then be promped to enter "b" or "B" to have the default polygons represented in the input file  
-drawn using Bresenham's Algorithm or enter "d" or "D" to use the DDA Algorithm. These polygons will be rasterized.
+Simply type "make" to compile. To run, enter "p2" followed by the name of the input file containing the polyhedron data you would like
+to specify. The values making up the vertices in this file may be positive or negative. If any value exceeds an absolute value of 500.0,
+the violating polyhedron portion will be clipped in its rendering. These polyhedrons will be rendered as wireframes and projected 
+orthographically into three views: XZ/front/plan, XY/top/elevation, and YZ/side/section. 
 
-Once the polygons have been rendered, you may right click anywhere on the viewing window and a menu will appear. In this menu you may select 
-to translate, scale, rotate, or clip any of the poygons pictured. 
+Once the polyhedrons have been rendered, you may right click anywhere on the primary viewing window (but outside any of the three projection
+subwindows)and a menu will appear. In this menu you may select to translate, scale, or rotate any of the poyhedrons pictured. 
 
 To translate: 
-When prompted, type the x followed by the y value of translation and hit enter.
+When prompted, type the desired x, y, and z values of translation (in that order) and hit enter.
 
 To scale: 
 When prompted, type the magnitude of the scaling and hit enter. 
 
 To rotate: 
 When prompted, type the angle of rotation in radians. A positive angle will rotate the selected polygon counter-clockwise.  
-
-To clip: 
-When prompted, enter the xMin, xMax, yMin, and yMax of the clipping window and hit enter. 
 
 The following algorithm/code line references indicate that algorithm's implemenation location as found in main.cpp:
 

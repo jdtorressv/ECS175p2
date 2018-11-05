@@ -12,6 +12,7 @@ using namespace std;
 
 
 //global variables
+vector<vector<double>> vArr;
 
 inline void mainMenu(int pid) {;}
 void init()
@@ -21,15 +22,11 @@ void init()
 	//Bounding Box: 
 	glOrtho(-500, 500, -500, 500, -500, 500); 
 }
-/*void init2()
-{
-	glClearColor(1.0, 1.0, 1.0, 0.0);
-        glMatrixMode(GL_PROJECTION);	
-	glOrtho(-500, 500, -500, 500, -500, 500);
-}*/
 void lineSegment()
 {
+	
 	glClear(GL_COLOR_BUFFER_BIT); 
+        glLoadIdentity();
 	glBegin(GL_LINES);
 		glColor3f(1.0, 1.0, 1.0); 
 		glVertex2f(-450, -450);
@@ -45,22 +42,58 @@ void background()
         glMatrixMode(GL_PROJECTION);
         glOrtho(-500, 500, -500, 500, -500, 500);
 
-	glClear(GL_COLOR_BUFFER_BIT); 
+	glClear(GL_COLOR_BUFFER_BIT);
+        glLoadIdentity();	
 	glFlush(); 
 }
 void translateMenu(int pid)
 {
-	;
+        ofstream file;
+        file.open("inputFile.txt", std::ofstream::out | std::ofstream::trunc);
+        if (!file) {
+                cerr << "Unable to open file\n";
+                exit(1);   // call system to stop
+        }
+        file << vArr.size() << '\n';
+        for (int i = 0; i < vArr.size(); i++) {
+                for (int j = 0; j < vArr.at(i).size(); j++)
+                        file << vArr.at(i).at(j) << '\n';
+        }
+
+	glutPostRedisplay();
 }
 void scaleMenu(int pid) 
 {
-	;
+	ofstream file;
+        file.open("inputFile.txt", std::ofstream::out | std::ofstream::trunc);
+        if (!file) {
+                cerr << "Unable to open file\n";
+                exit(1);   // call system to stop
+        }
+        file << vArr.size() << '\n';
+        for (int i = 0; i < vArr.size(); i++) {
+                for (int j = 0; j < vArr.at(i).size(); j++)
+                        file << vArr.at(i).at(j) << '\n';
+        }
+ 
+	glutPostRedisplay();
 }
 void rotateMenu(int pid)
 {
-	;
-}
+        ofstream file;
+        file.open("inputFile.txt", std::ofstream::out | std::ofstream::trunc);
+        if (!file) {
+                cerr << "Unable to open file\n";
+                exit(1);   // call system to stop
+        }
+        file << vArr.size() << '\n';
+        for (int i = 0; i < vArr.size(); i++) {
+                for (int j = 0; j < vArr.at(i).size(); j++)
+                        file << vArr.at(i).at(j) << '\n';
+        }
 
+        glutPostRedisplay();
+}
 int main(int argc, char** argv) 
 {
 	if (argc != 2) {
@@ -90,6 +123,20 @@ int main(int argc, char** argv)
         while (file >> num)
                 v.push_back(num); //Initial vector for all polygons
         file.close();
+
+	auto vpoint = v.begin(); 
+	int polyTotal = (int)*vpoint;
+	
+	for (int i = 0; i < polyTotal; i++) {
+        	vector<double> Vx;
+                vArr.push_back(Vx);
+                double vertices = *(++vpoint);
+                vArr.at(i).push_back(vertices);
+                for (int j = 0; j < vertices; j++) {
+                        vArr.at(i).push_back(*(++vpoint));
+                        vArr.at(i).push_back(*(++vpoint));
+                }
+        }
 
 
 	int window1 = glutCreateSubWindow(windowID, 25, 50, 320, 320);
