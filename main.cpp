@@ -305,7 +305,6 @@ void rotateMenu(int pid)
 	}
 	
         glutPostRedisplay();
-	/*
 
 	//Write changes back to file 
         ofstream file;
@@ -323,7 +322,7 @@ void rotateMenu(int pid)
                 file << lArr.at(i).at(0) << '\n';
                 for (int k = 1; k < lArr.at(i).size(); k+=2)
                         file << lArr.at(i).at(k) << " " << lArr.at(i).at(k+1) << '\n';
-        }*/	
+        }
 }
 
 int main(int argc, char** argv) 
