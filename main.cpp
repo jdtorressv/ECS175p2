@@ -18,7 +18,8 @@ vector<vector<double>> vArr;
 vector<vector<double>> lArr;
 int windowID, windowXY, windowXZ, windowYZ; 
 char* fileName;  
-bool backSet = false; 
+bool rotate = false; 
+float rx1, ry1, rz1, rx2, ry2, rz2; 
 
 inline void mainMenu(int pid) {;}
 void init()
@@ -30,12 +31,6 @@ void init()
 
         glMatrixMode(GL_PROJECTION);
 }
-/*void init2()
-{
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glMatrixMode(GL_PROJECTION); 
-	//glOrtho(-500.0, 500.0, -500.0, 500.0, -500.0, 500.0); 
-}*/
 void drawSceneXY()
 {
 	glClear(GL_COLOR_BUFFER_BIT); 
@@ -57,6 +52,14 @@ void drawSceneXY()
 				glVertex2f(x2, y2); 
 			}
 		}
+		//cout << "In XY, rotate set to " << rotate << endl; 
+		//cout << "From (" << rx1 << ", " << ry1 << ") to (" << rx2 << ", " << ry2 << ")\n";   
+                if (rotate) {
+                        glColor3f(1.0, 1.0, 1.0);
+                        glVertex2f(rx1, ry1);
+                        glVertex2f(rx2, ry2);
+                }
+
 	glEnd(); 
 	glFlush(); 
 }
@@ -81,6 +84,13 @@ void drawSceneXZ()
                                 glVertex2f(x2, z2);
                 	}
         	}
+
+                if (rotate) {
+                        glColor3f(1.0, 1.0, 1.0);
+                        glVertex2f(rx1, rz1);
+                        glVertex2f(rx2, rz2);
+                }
+
 	glEnd(); 
 	glFlush(); 
 }
@@ -105,8 +115,16 @@ void drawSceneYZ()
                                 glVertex2f(y2, z2);
                 	}
         	}
+		
+		if (rotate) {
+                        glColor3f(1.0, 1.0, 1.0);
+			glVertex2f(ry1, rz1); 
+			glVertex2f(ry2, rz2); 
+		}
+
 	glEnd(); 
 	glFlush(); 
+	rotate = false; 
 }
 void background()
 {
@@ -203,7 +221,6 @@ void scaleMenu(int pid)
 	centY = ySum / (double)vertices;
 	centZ = zSum / (double)vertices; 
 	
-	//Start here...
         for (int i = 0; i < vertices; i++) {
                 vArr.at(pid).at(1+i*3) = scale*(vArr.at(pid).at(1+i*3) - centX) + centX;
                 vArr.at(pid).at(2+i*3) = scale*(vArr.at(pid).at(2+i*3) - centY) + centY;
@@ -232,8 +249,25 @@ void scaleMenu(int pid)
 }
 void rotateMenu(int pid)
 {
-        
+        float alpha; 
+	rotate = true; 
+	cout << "Please enter the x1, y1, z1, x2, y2, and z2 values to define an axis of rotation, followed by the angle of rotation in radians\n"; 
+	cin >> rx1 >> ry1 >> rz1 >> rx2 >> ry2 >> rz2 >> alpha; 
+	rx1 /= NORM;
+	ry1 /= NORM;
+	rz1 /= NORM;
+	rx2 /= NORM;
+	ry2 /= NORM;
+        rz2 /= NORM; 	
+
 	
+
+
+
+
+        glutPostRedisplay();
+	/*
+
 	//Write changes back to file 
         ofstream file;
         file.open(fileName, std::ofstream::out | std::ofstream::trunc);
@@ -250,7 +284,7 @@ void rotateMenu(int pid)
                 file << lArr.at(i).at(0) << '\n';
                 for (int k = 1; k < lArr.at(i).size(); k+=2)
                         file << lArr.at(i).at(k) << " " << lArr.at(i).at(k+1) << '\n';
-        }	
+        }*/	
 }
 
 int main(int argc, char** argv) 

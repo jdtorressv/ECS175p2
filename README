@@ -21,7 +21,7 @@ To scale:
 When prompted, type the magnitude of the scaling and hit enter. 
 
 To rotate: 
-When prompted, type the x1, y1, x2, and y2 values representing the line around which the desired polyhedron will be rotated, followed by the 
+When prompted, type the x1, y1, z1, x2, y2, and z2 values representing the line around which the desired polyhedron will be rotated, followed by the 
 angle of rotation in radians. A positive angle will rotate the selected polygon counter-clockwise.
 
 To view a polyhedron's vertices:
