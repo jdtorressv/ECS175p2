@@ -118,7 +118,6 @@ void background()
 }
 void display()
 {	
-	cout << "I'm being called!\n"; 
 	glutSetWindow(windowID);
 	background(); 
         glutSetWindow(windowXY);
@@ -147,8 +146,7 @@ void translateMenu(int pid)
                 cout << "(" << vArr.at(pid).at(i)*NORM << ", " << vArr.at(pid).at(i+1)*NORM << ", " << vArr.at(pid).at(i+2)*NORM << ")\n";
 	//glutSetWindow(windowID); 
 	glutPostRedisplay(); 
-	cout << "glutPostRedisplay() was called\n";
- /*	
+ 	
 	//Write changes back to file 
 	ofstream file;
         file.open(fileName, std::ofstream::out | std::ofstream::trunc);
@@ -164,44 +162,52 @@ void translateMenu(int pid)
                         file << vArr.at(i).at(j)*NORM << " " << vArr.at(i).at(j+1)*NORM << " " << vArr.at(i).at(j+2)*NORM << '\n';
 		file << lArr.at(i).at(0) << '\n'; 
 		for (int k = 1; k < lArr.at(i).size(); k+=2)
-			file << lArr.at(i).at(k) << " " << lArr.at(i).at(k) << '\n'; 	
+			file << lArr.at(i).at(k) << " " << lArr.at(i).at(k+1) << '\n'; 	
         }
-*/
-	//Display new scene 
-	//glutPostRedisplay();
 }
 void scaleMenu(int pid) 
 {
-	/*ofstream file;
-        file.open("inputFile.txt", std::ofstream::out | std::ofstream::trunc);
+        
+
+	//Write changes back to file 
+        ofstream file;
+        file.open(fileName, std::ofstream::out | std::ofstream::trunc);
         if (!file) {
                 cerr << "Unable to open file\n";
                 exit(ERROR);   // call system to stop
         }
+
         file << vArr.size() << '\n';
         for (int i = 0; i < vArr.size(); i++) {
-                for (int j = 0; j < vArr.at(i).size(); j++)
-                        file << vArr.at(i).at(j) << '\n';
+                file << '\n' << vArr.at(i).at(0) << '\n';
+                for (int j = 1; j < vArr.at(i).size(); j+=3)
+                        file << vArr.at(i).at(j)*NORM << " " << vArr.at(i).at(j+1)*NORM << " " << vArr.at(i).at(j+2)*NORM << '\n';
+                file << lArr.at(i).at(0) << '\n';
+                for (int k = 1; k < lArr.at(i).size(); k+=2)
+                        file << lArr.at(i).at(k) << " " << lArr.at(i).at(k+1) << '\n';
         }
- 
-	glutPostRedisplay()*/;
 }
 void rotateMenu(int pid)
 {
-        /*ofstream file;
-        file.open("inputFile.txt", std::ofstream::out | std::ofstream::trunc);
+        
+	
+	//Write changes back to file 
+        ofstream file;
+        file.open(fileName, std::ofstream::out | std::ofstream::trunc);
         if (!file) {
                 cerr << "Unable to open file\n";
                 exit(ERROR);   // call system to stop
         }
+
         file << vArr.size() << '\n';
         for (int i = 0; i < vArr.size(); i++) {
-                for (int j = 0; j < vArr.at(i).size(); j++)
-                        file << vArr.at(i).at(j) << '\n';
-        }
-
-        glutPostRedisplay()*/;
-	
+                file << '\n' << vArr.at(i).at(0) << '\n';
+                for (int j = 1; j < vArr.at(i).size(); j+=3)
+                        file << vArr.at(i).at(j)*NORM << " " << vArr.at(i).at(j+1)*NORM << " " << vArr.at(i).at(j+2)*NORM << '\n';
+                file << lArr.at(i).at(0) << '\n';
+                for (int k = 1; k < lArr.at(i).size(); k+=2)
+                        file << lArr.at(i).at(k) << " " << lArr.at(i).at(k+1) << '\n';
+        }	
 }
 void vertexMenu(int pid)
 {
