@@ -16,16 +16,26 @@ using namespace std;
 //global variables
 vector<vector<double>> vArr;
 vector<vector<double>> lArr;
-int windowXY, windowXZ, windowYZ; 
+int windowID, windowXY, windowXZ, windowYZ; 
 char* fileName;  
+bool backSet = false; 
 
 inline void mainMenu(int pid) {;}
 void init()
+{	
+	if (glutGetWindow() == windowID) 
+		glClearColor(1.0, 1.0, 1.0, 0.0);
+	else 
+        	glClearColor(0.0, 0.0, 0.0, 0.0);
+
+        glMatrixMode(GL_PROJECTION);
+}
+/*void init2()
 {
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glMatrixMode(GL_PROJECTION); 
 	//glOrtho(-500.0, 500.0, -500.0, 500.0, -500.0, 500.0); 
-}
+}*/
 void drawSceneXY()
 {
 	glClear(GL_COLOR_BUFFER_BIT); 
@@ -98,24 +108,25 @@ void drawSceneYZ()
 	glEnd(); 
 	glFlush(); 
 }
-void drawScenes()
+void background()
 {
+        //glOrtho(-500.0, 500.0, -500.0, 500.0, -500.0, 500.0);
+
+        glClear(GL_COLOR_BUFFER_BIT);
+        glLoadIdentity();
+        glFlush();
+}
+void display()
+{	
+	cout << "I'm being called!\n"; 
+	glutSetWindow(windowID);
+	background(); 
         glutSetWindow(windowXY);
         drawSceneXY();
         glutSetWindow(windowXZ);
         drawSceneXZ();
         glutSetWindow(windowYZ);
         drawSceneYZ();
-}
-void background() 
-{
-	glClearColor(1.0, 1.0, 1.0, 0.0);
-        glMatrixMode(GL_PROJECTION);
-        //glOrtho(-500.0, 500.0, -500.0, 500.0, -500.0, 500.0);
-
-	glClear(GL_COLOR_BUFFER_BIT);
-        glLoadIdentity();	
-	glFlush(); 
 }
 void translateMenu(int pid)
 {
@@ -124,14 +135,20 @@ void translateMenu(int pid)
 	cout << "Number of vertices is " << vertices << endl; 
         cout << "Please enter the x, y, and z translation values:\n";
         cin >> x >> y >> z; 
-	cout << "You entered " << x << ", " << y << ", " << z << endl; 
+	cout << "After normalization, you entered " << x/NORM << ", " << y/NORM << ", " << z/NORM << endl; 
         for (int i = 0; i < vertices; i++) {
                 vArr.at(pid).at(1+3*i) += x/NORM;
                 vArr.at(pid).at(2+3*i) += y/NORM;
-		vArr.at(pid).at(3+3*i) += z/NORM; 
+		vArr.at(pid).at(3+3*i) += z/NORM;
+	       	
         }
-	cout << "Made it here in translate\n"; 
-	
+	cout << "Coordinates have been chaned to:\n";
+ 	for (int i = 1; i < vArr.at(pid).size(); i+=3)
+                cout << "(" << vArr.at(pid).at(i)*NORM << ", " << vArr.at(pid).at(i+1)*NORM << ", " << vArr.at(pid).at(i+2)*NORM << ")\n";
+	//glutSetWindow(windowID); 
+	glutPostRedisplay(); 
+	cout << "glutPostRedisplay() was called\n";
+ /*	
 	//Write changes back to file 
 	ofstream file;
         file.open(fileName, std::ofstream::out | std::ofstream::trunc);
@@ -149,9 +166,9 @@ void translateMenu(int pid)
 		for (int k = 1; k < lArr.at(i).size(); k+=2)
 			file << lArr.at(i).at(k) << " " << lArr.at(i).at(k) << '\n'; 	
         }
-
+*/
 	//Display new scene 
-	glutPostRedisplay();
+	//glutPostRedisplay();
 }
 void scaleMenu(int pid) 
 {
@@ -212,8 +229,9 @@ int main(int argc, char** argv)
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
 	glutInitWindowPosition(100, 100); 
 	glutInitWindowSize(800, 800); 
-	int windowID = glutCreateWindow("Polyhedron Orthographic Projections: XY, XZ, YZ from left to right and top down");  
-	glutDisplayFunc(background);
+
+	windowID = glutCreateWindow("Polyhedron Orthographic Projections: XY, XZ, YZ from left to right and top down");  
+	init();
 
 	int scale_menu, rotate_menu, translate_menu, vertex_menu; //For use in graphical menu
 
@@ -257,20 +275,15 @@ int main(int argc, char** argv)
 	//XY
 	windowXY = glutCreateSubWindow(windowID, 25, 50, 320, 320);
 	init();
-	//glutDisplayFunc(drawSceneXY); 
 
 	//XZ
 	windowXZ = glutCreateSubWindow(windowID, 25, 450, 320, 320); 
 	init(); 
-	//glutDisplayFunc(drawSceneXZ);	
 
 	//YZ
 	windowYZ = glutCreateSubWindow(windowID, 425, 450, 320, 320); 
 	init();
-	//glutDisplayFunc(drawSceneYZ); 
 	
-	glutDisplayFunc(drawScenes);
-
 
 	
 	glutSetWindow(windowID); 
@@ -302,6 +315,9 @@ int main(int argc, char** argv)
                 glutAddSubMenu("Rotate", rotate_menu);
 		glutAddSubMenu("Vertex Dump", vertex_menu); 
         glutAttachMenu(GLUT_RIGHT_BUTTON);
+
+
+        glutDisplayFunc(display);
 
 
 	glutMainLoop(); 
