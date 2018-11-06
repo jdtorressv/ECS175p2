@@ -127,6 +127,21 @@ void display()
         glutSetWindow(windowYZ);
         drawSceneYZ();
 }
+void vertexMenu(int pid)
+{
+        switch (pid)
+        {
+                case 0: cout << "Present vertices of the octahedron or polhedron 0:\n";
+                        break;
+                case 1: cout << "Present vertices of the tetrahedron or polyhedron 1:\n";
+                        break;
+                case 2: cout << "Present vertices of the hexahedron or polyhedron 2:\n";
+                        break;
+        }
+        for (int i = 1; i < vArr.at(pid).size(); i+=3)
+                cout << "(" << vArr.at(pid).at(i)*NORM << ", " << vArr.at(pid).at(i+1)*NORM << ", " << vArr.at(pid).at(i+2)*NORM << ")\n";
+
+}
 void translateMenu(int pid)
 {
         float x, y, z;
@@ -237,21 +252,7 @@ void rotateMenu(int pid)
                         file << lArr.at(i).at(k) << " " << lArr.at(i).at(k+1) << '\n';
         }	
 }
-void vertexMenu(int pid)
-{
-	switch (pid) 
-	{
-		case 0: cout << "Present vertices of the octahedron or polhedron 0:\n";
-			break; 
-		case 1: cout << "Present vertices of the tetrahedron or polyhedron 1:\n"; 
-		        break; 
-		case 2: cout << "Present vertices of the hexahedron or polyhedron 2:\n";  	
-			break; 
-	}
-	for (int i = 1; i < vArr.at(pid).size(); i+=3) 
-		cout << "(" << vArr.at(pid).at(i)*NORM << ", " << vArr.at(pid).at(i+1)*NORM << ", " << vArr.at(pid).at(i+2)*NORM << ")\n"; 
 
-}
 int main(int argc, char** argv) 
 {
 	if (argc != 2) {

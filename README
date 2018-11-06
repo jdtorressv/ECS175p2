@@ -15,13 +15,14 @@ pictured.
 
 
 To translate: 
-When prompted, type the desired x, y, and z values of translation (in that order) and hit enter.
+When prompted, type the desired x, y, and z world coordinate values of translation, in that order, and hit enter.
 
 To scale: 
 When prompted, type the magnitude of the scaling and hit enter. 
 
 To rotate: 
-When prompted, type the angle of rotation in radians. A positive angle will rotate the selected polygon counter-clockwise.
+When prompted, type the x1, y1, x2, and y2 values representing the line around which the desired polyhedron will be rotated, followed by the 
+angle of rotation in radians. A positive angle will rotate the selected polygon counter-clockwise.
 
 To view a polyhedron's vertices:
 No actions are required beyond selecting your polyhedron of choice.   
@@ -29,12 +30,12 @@ No actions are required beyond selecting your polyhedron of choice.
 
 The following algorithm/code line references indicate that algorithm's implemenation location as found in main.cpp:
 
-Digital Differential Analyzer.....................................175-191
-Bresenham's Algorithm.............................................192-283
-Rasterization.....................................................284-315
-Scaling...........................................................356-394
-Rotation..........................................................395-436
-Translation.......................................................437-461
-Clipping (Sutherland-Hodgman).....................................462-563
+XY Projection.....................................................39-62
+XZ Projection.....................................................63-109
+YZ Projection.....................................................87-110
+Vertex Dump.......................................................130-144
+Translation.......................................................145-179
+Scaling...........................................................180-232
+Rotation..........................................................233-293
 
  
