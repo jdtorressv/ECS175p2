@@ -10,7 +10,7 @@ the violating polyhedron portion will be clipped in its rendering. These polyhed
 orthographically into three views: XY/top/elevation, XZ/front/plan, and YZ/side/section. 
 
 Once the polyhedrons have been rendered, you may right click anywhere on the primary viewing window (but outside any of the three projection
-subwindows)and a menu will appear. In this menu you may select to translate, scale, rotate, or display the vertices of any of the poyhedrons 
+subwindows) and a menu will appear. In this menu you may select to translate, scale, rotate, or display the vertices of any of the poyhedrons 
 pictured. 
 
 
@@ -22,7 +22,8 @@ When prompted, type the magnitude of the scaling and hit enter.
 
 To rotate: 
 When prompted, type the x1, y1, z1, x2, y2, and z2 values representing the line around which the desired polyhedron will be rotated, followed by the 
-angle of rotation in radians. A positive angle will rotate the selected polygon counter-clockwise.
+angle of rotation in radians. A positive angle will rotate the selected polygon counter-clockwise from the perspective of facing in the negative
+direction down the axis of rotation. 
 
 To view a polyhedron's vertices:
 No actions are required beyond selecting your polyhedron of choice.   
@@ -37,5 +38,7 @@ Vertex Dump.......................................................130-144
 Translation.......................................................145-179
 Scaling...........................................................180-232
 Rotation..........................................................233-328
+
+Everything implemented to carry out the assignment specifications should be fully functional. 
 
  

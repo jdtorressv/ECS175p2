@@ -14,29 +14,39 @@ using namespace std;
 #define NORM 500.0 
 
 //global variables
+
+/* vArr and lArr are vectors of vectors of the vertices and lines for each 
+ * polygon build from the input file and are referenced throughout. */
 vector<vector<double>> vArr;
 vector<vector<double>> lArr;
+
 int windowID, windowXY, windowXZ, windowYZ; 
 char* fileName;  
 bool rotate = false; 
-float rx1, ry1, rz1, rx2, ry2, rz2; 
+float rx1, ry1, rz1, rx2, ry2, rz2; //Used in Axis of Rotation Definition  
 
+
+//Inline function for mainMenu delegates all functionality to sub menus 
 inline void mainMenu(int pid) {;}
+
+//Initializes each of the subwindoes as well as the primary window 
 void init()
 {	
 	if (glutGetWindow() == windowID) 
-		glClearColor(1.0, 1.0, 1.0, 0.0);
+		glClearColor(1.0, 1.0, 1.0, 0.0); //Set color to white
 	else 
-        	glClearColor(0.0, 0.0, 0.0, 0.0);
+        	glClearColor(0.0, 0.0, 0.0, 0.0); //Set color to black
 
         glMatrixMode(GL_PROJECTION);
 }
+
+//Draws the lines as specified by the lines via vertex pairs in the input file; XY: All Z values are ignored 
 void drawSceneXY()
 {
 	glClear(GL_COLOR_BUFFER_BIT); 
         glLoadIdentity();
 	glBegin(GL_LINES);
-		//XY: All Z values are ignored 
+		
 		for (int i = 0; i < lArr.size(); i++) { //For each polyhedron
 			for (int j = 1; j < lArr.at(i).size(); j = j+2) { //For each each line in the polyhedron 
 				//First vArr entry appears as [6,0,100,200,200,100,200,0,300,200,200,300,200,100,200,400,100,200,0]
@@ -52,8 +62,8 @@ void drawSceneXY()
 				glVertex2f(x2, y2); 
 			}
 		}
-		//cout << "In XY, rotate set to " << rotate << endl; 
-		//cout << "From (" << rx1 << ", " << ry1 << ") to (" << rx2 << ", " << ry2 << ")\n";   
+
+		//If called by rotate function, draw the rotation of axis as well 
                 if (rotate) {
                         glColor3f(1.0, 1.0, 1.0);
                         glVertex2f(rx1, ry1);
@@ -63,12 +73,13 @@ void drawSceneXY()
 	glEnd(); 
 	glFlush(); 
 }
+//Draws the lines as specified by the lines via vertex pairs in the input file; XZ: All Y values are ignored
 void drawSceneXZ()
 {
         glClear(GL_COLOR_BUFFER_BIT);
         glLoadIdentity();
 	glBegin(GL_LINES);
-		//XZ: All Y values are ignored 
+		 
         	for (int i = 0; i < lArr.size(); i++) { //For each polyhedron
                 	for (int j = 1; j < lArr.at(i).size(); j = j+2) { //For each each line in the polyhedron 
                         	//First vArr entry appears as [6,0,100,200,200,100,200,0,300,200,200,300,200,100,200,400,100,200,0]
@@ -85,6 +96,7 @@ void drawSceneXZ()
                 	}
         	}
 
+                //If called by rotate function, draw the rotation of axis as well 
                 if (rotate) {
                         glColor3f(1.0, 1.0, 1.0);
                         glVertex2f(rx1, rz1);
@@ -94,6 +106,7 @@ void drawSceneXZ()
 	glEnd(); 
 	glFlush(); 
 }
+//Draws the lines as specified by the lines via vertex pairs in the input file; XZ: All Y values are ignored
 void drawSceneYZ()
 {
         glClear(GL_COLOR_BUFFER_BIT);
@@ -116,24 +129,25 @@ void drawSceneYZ()
                 	}
         	}
 		
+                //If called by rotate function, draw the rotation of axis as well 
 		if (rotate) {
                         glColor3f(1.0, 1.0, 1.0);
 			glVertex2f(ry1, rz1); 
-			glVertex2f(ry2, rz2); 
+			glVertex2f(ry2, rz2);
+		        rotate = false; //YZ scene drawn last; if end of rotate call, reset rotate flag
 		}
 
 	glEnd(); 
 	glFlush(); 
-	rotate = false; 
 }
+//Set up main display 
 void background()
 {
-        //glOrtho(-500.0, 500.0, -500.0, 500.0, -500.0, 500.0);
-
         glClear(GL_COLOR_BUFFER_BIT);
         glLoadIdentity();
         glFlush();
 }
+//Master display function
 void display()
 {	
 	glutSetWindow(windowID);
@@ -145,6 +159,7 @@ void display()
         glutSetWindow(windowYZ);
         drawSceneYZ();
 }
+//Provide current vertex information for specified polyhedron 
 void vertexMenu(int pid)
 {
         switch (pid)
@@ -160,6 +175,7 @@ void vertexMenu(int pid)
                 cout << "(" << vArr.at(pid).at(i)*NORM << ", " << vArr.at(pid).at(i+1)*NORM << ", " << vArr.at(pid).at(i+2)*NORM << ")\n";
 
 }
+//Translation 
 void translateMenu(int pid)
 {
         float x, y, z;
@@ -167,6 +183,7 @@ void translateMenu(int pid)
 	cout << "Number of vertices is " << vertices << endl; 
         cout << "Please enter the x, y, and z translation values:\n";
         cin >> x >> y >> z; 
+	//Norm is used to normalize world coordinates 
 	cout << "After normalization, you entered " << x/NORM << ", " << y/NORM << ", " << z/NORM << endl; 
         for (int i = 0; i < vertices; i++) {
                 vArr.at(pid).at(1+3*i) += x/NORM;
@@ -195,6 +212,7 @@ void translateMenu(int pid)
 			file << lArr.at(i).at(k) << " " << lArr.at(i).at(k+1) << '\n'; 	
         }
 }
+//Scaling
 void scaleMenu(int pid) 
 {
         double scale;
@@ -250,7 +268,7 @@ void scaleMenu(int pid)
 void rotateMenu(int pid)
 {
         float alpha; 
-	rotate = true; 
+	rotate = true; //Set rotate flag to true 
         int vertices = vArr.at(pid).at(0);
 	cout << "Please enter the x1, y1, z1, x2, y2, and z2 values to define an axis of rotation, followed by the angle of rotation in radians\n"; 
 	cin >> rx1 >> ry1 >> rz1 >> rx2 >> ry2 >> rz2 >> alpha; 
@@ -266,6 +284,7 @@ void rotateMenu(int pid)
 	float c = (rz2 - rz1) / mag; 
 	float d = sqrt(pow(b, 2) + pow(c, 2));
 	
+	// Phases are as outlined in the text, i.e. R(theta) = T^-1 * Rx^-1(alpha) * Ry^-1(beta) * Rz(theta) * Ry(beta) * Rx(alpha) * T
 	for (int i = 0; i < vertices; i++) {
 		float oldX, oldY, oldZ, tempX, tempY, tempZ; 
 		//Phase 1/7
@@ -342,7 +361,7 @@ int main(int argc, char** argv)
 
 	int scale_menu, rotate_menu, translate_menu, vertex_menu; //For use in graphical menu
 
-        vector<double> v; // The main V
+        vector<double> v;
         double num;
 	fileName = argv[1]; 
         fstream file;
