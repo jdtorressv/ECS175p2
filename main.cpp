@@ -7,7 +7,7 @@
 #include <vector>
 #include <string>
 #include <iomanip>
-
+#include <cmath>
 using namespace std;
 
 #define ERROR 1 
@@ -251,6 +251,7 @@ void rotateMenu(int pid)
 {
         float alpha; 
 	rotate = true; 
+        int vertices = vArr.at(pid).at(0);
 	cout << "Please enter the x1, y1, z1, x2, y2, and z2 values to define an axis of rotation, followed by the angle of rotation in radians\n"; 
 	cin >> rx1 >> ry1 >> rz1 >> rx2 >> ry2 >> rz2 >> alpha; 
 	rx1 /= NORM;
@@ -259,12 +260,50 @@ void rotateMenu(int pid)
 	rx2 /= NORM;
 	ry2 /= NORM;
         rz2 /= NORM; 	
-
+	float mag = sqrt(pow((rx2 - rx1), 2) + pow((ry2 -ry1), 2) + pow((rz2 - rz1), 2)); 
+	float a = (rx2 - rx1) / mag; 
+	float b = (ry2 -ry1) / mag; 
+	float c = (rz2 - rz1) / mag; 
+	float d = sqrt(pow(b, 2) + pow(c, 2));
 	
+	for (int i = 0; i < vertices; i++) {
+		float oldX, oldY, oldZ, tempX, tempY, tempZ; 
+		//Phase 1/7
+		oldX = vArr.at(pid).at(1+i*3) - rx1; 
+		oldY = vArr.at(pid).at(2+i*3) - ry1; 
+		oldZ = vArr.at(pid).at(3+i*3) - rz1; 
 
+		//Phase 2/7
+		tempX = oldX; 
+		tempY = (c/d)*oldY + (-1*b/d)*oldZ;
+		tempZ = (b/d)*oldY + (c/d)*oldZ; 
 
+		//Phase 3/7
+		oldX = d*tempX - a*tempZ; 
+		oldY = tempY; 
+		oldZ = a*tempX + d*tempZ; 
 
+		//Phase 4/7
+		tempX = oldX*cos(alpha) - oldY*sin(alpha);
+		tempY = oldX*sin(alpha) + oldY*cos(alpha);
+		tempZ = oldZ; 
 
+		//Phase 5/7
+		oldX = d*tempX + a*tempZ; 
+		oldY = tempY;
+		oldZ = d*tempZ - a*tempX;
+
+		//Phase 6/7
+		tempX = oldX;
+		tempY = (c/d)*oldY + (b/d)*oldZ; 
+		tempZ = (c/d)*oldZ - (b/d)*oldY; 
+
+		//Phase 7/7
+                vArr.at(pid).at(1+i*3) = tempX + rx1; 
+                vArr.at(pid).at(2+i*3) = tempY + ry1;
+                vArr.at(pid).at(3+i*3) = tempZ + rz1; 
+	}
+	
         glutPostRedisplay();
 	/*
 
