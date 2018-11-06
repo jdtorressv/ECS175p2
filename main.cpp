@@ -141,10 +141,7 @@ void translateMenu(int pid)
 		vArr.at(pid).at(3+3*i) += z/NORM;
 	       	
         }
-	cout << "Coordinates have been chaned to:\n";
- 	for (int i = 1; i < vArr.at(pid).size(); i+=3)
-                cout << "(" << vArr.at(pid).at(i)*NORM << ", " << vArr.at(pid).at(i+1)*NORM << ", " << vArr.at(pid).at(i+2)*NORM << ")\n";
-	//glutSetWindow(windowID); 
+
 	glutPostRedisplay(); 
  	
 	//Write changes back to file 
@@ -167,7 +164,38 @@ void translateMenu(int pid)
 }
 void scaleMenu(int pid) 
 {
+        double scale;
+        int vertices = vArr.at(pid).at(0);
+        double xSum = 0;
+        double ySum = 0;
+	double zSum = 0; 
+        double centX, centY, centZ;
+
+        cout << "Please enter the magnitude you'd like to scale by:\n";
+        cin >> scale;
+
+	// Calculate centroids 
+        for (int i = 0; i < vertices; i++) 
+                xSum += vArr.at(pid).at(1+i*3);
         
+        for (int i = 0; i < vertices; i++) 
+                ySum += vArr.at(pid).at(2+i*3);
+        
+	for (int i = 0; i < vertices; i++) 
+		zSum += vArr.at(pid).at(3+i*3);
+
+	centX = xSum / (double)vertices;
+	centY = ySum / (double)vertices;
+	centZ = zSum / (double)vertices; 
+	
+	//Start here...
+        for (int i = 0; i < vertices; i++) {
+                vArr.at(pid).at(1+i*3) = scale*(vArr.at(pid).at(1+i*3) - centX) + centX;
+                vArr.at(pid).at(2+i*3) = scale*(vArr.at(pid).at(2+i*3) - centY) + centY;
+		vArr.at(pid).at(3+i*3) = scale*(vArr.at(pid).at(3+i*3) - centZ) + centZ; 
+        }
+
+        glutPostRedisplay();
 
 	//Write changes back to file 
         ofstream file;
